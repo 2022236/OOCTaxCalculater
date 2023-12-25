@@ -4,29 +4,35 @@ package OOCTaxCalculater;
  *
  * @author Lizandra Matos 2022336 and Taciana Oliveira 2022404
  */
-public class TaxPayer { //variables
+public class TaxPayer { // Class representing taxpayer financial information
+    
+    // Variables to store financial details
+    private final float GrossPayment; // Gross payment amount (cannot be changed after initialization)
+    private float NetPayment; // Net payment amount
+    private float USC; // Universal Social Charge
+    private float PRSCI; // Pay Related Social Insurance
+    private float IcommingTax; // Incoming Tax
+    
+    // Other financial variables
+    private int totalWeekPerYear; // Total weeks in a year
+    private float weekPayment; // Payment per week
+    private float basicTax; // Basic tax rate
+    
+    // Constants for tax calculation
+    private final float personalCredit; // Personal credit
+    private final float employeeCredit; // Employee credit
 
-    private final float GrossPayment;
-    private float NetPayment;
-    private float USC;
-    private float PRSCI;
-    private float IcommingTax;
-
-    private int totalWeekPerYear;
-    private float weekPayment;
-    private float basicTax;
-
-    private final float personalCredit;
-    private final float employeeCredit;
-
+    // Constructor to initialize taxpayer's financial details
     public TaxPayer(float GrossPayment) {
-        this.GrossPayment = GrossPayment;
-        this.personalCredit = 1775;
-        this.employeeCredit = 1775;
-        this.totalWeekPerYear = 52;
-        this.weekPayment = this.GrossPayment / this.totalWeekPerYear;
-        this.basicTax = (float) 0.2;
-        
+         // Initializing variables
+        this.GrossPayment = GrossPayment; // Assigning GrossPayment value provided in the constructor
+        this.personalCredit = 1775; // Setting a fixed value for personal credit
+        this.employeeCredit = 1775; // Setting a fixed value for employee credit
+        this.totalWeekPerYear = 52; // Total weeks per year
+        this.weekPayment = this.GrossPayment / this.totalWeekPerYear; // Calculating payment per week
+        this.basicTax = (float) 0.2; // Setting the basic tax rate (20%)
+
+        // Initializing calculated payments and taxes to -1
         this.NetPayment = -1;
         this.USC = -1;
         this.PRSCI = -1;
@@ -35,26 +41,28 @@ public class TaxPayer { //variables
 }
 
 public TaxPayer(float GrossPayment, float NetPayment, float USC, float PRSCI, float IcommingTax) {
-        this.GrossPayment = GrossPayment;
-        this.personalCredit = 1775;
-        this.employeeCredit = 1775;
-        this.totalWeekPerYear = 52;
-        this.weekPayment = this.GrossPayment/this.totalWeekPerYear;
-        this.basicTax = (float) 0.2;
-        this.NetPayment = NetPayment;
-        this.USC = USC;
-        this.PRSCI = PRSCI;
-        this.IcommingTax = IcommingTax;        
+        // Assigning values passed to the constructor to respective class fields
+        this.GrossPayment = GrossPayment; // Assigning GrossPayment value provided in the constructor
+        this.personalCredit = 1775; // Setting a fixed value for personal credit
+        this.employeeCredit = 1775; // Setting a fixed value for employee credit
+        this.totalWeekPerYear = 52; // Total weeks per year
+        this.weekPayment = this.GrossPayment/this.totalWeekPerYear; // Calculating payment per week
+        this.basicTax = (float) 0.2; // Setting the basic tax rate (20%)
+        this.NetPayment = NetPayment; // Assigning NetPayment value provided in the constructor
+        this.USC = USC; // Assigning USC value provided in the constructor
+        this.PRSCI = PRSCI; // Assigning PRSCI value provided in the constructor
+        this.IcommingTax = IcommingTax; // Assigning IcommingTax value provided in the constructor       
  
     }
-    
+
+    // This constructor initializes a TaxPayer object with default values:
     public TaxPayer() {
         this.GrossPayment = 0;
         this.personalCredit = 1775;
         this.employeeCredit = 1775;
-        this.totalWeekPerYear = 52;
-        this.weekPayment = this.GrossPayment / this.totalWeekPerYear;
-        this.basicTax = (float) 0.2;
+        this.totalWeekPerYear = 52; // - totalWeekPerYear is set to 52 weeks.
+        this.weekPayment = this.GrossPayment / this.totalWeekPerYear; // - weekPayment is calculated based on GrossPayment divided by totalWeekPerYear.
+        this.basicTax = (float) 0.2; // - basicTax is set to 0.2 (20%).
 
         this.NetPayment = -1;
         this.USC = -1;
@@ -62,7 +70,8 @@ public TaxPayer(float GrossPayment, float NetPayment, float USC, float PRSCI, fl
         this.IcommingTax = -1;
 
     }
-    
+
+    // This method, '_IcommingTaxCalculator', calculates the incoming tax based on the provided 'position' and existing financial attributes.
     protected float _IcommingTaxCalculator(String position ) {
         float credits = this.personalCredit;  // Initializes the credits variable with the personal credit value
         
