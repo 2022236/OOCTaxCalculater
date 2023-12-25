@@ -11,10 +11,16 @@ package OOCTaxCalculator;
 
 public class commonVariables {
 
+    /**
+     * Enum defining user types: Admin and Regular.
+     */
     public enum Type {
         Admin, Regular
     }
-    
+
+     /**
+     * Enum defining marital statuses: Single, Married, and Widowed.
+     */
     public enum MaritalStatus {
         Single, Married, widowed
     }
