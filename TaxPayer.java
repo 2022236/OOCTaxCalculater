@@ -1,4 +1,4 @@
-package taxcalculationsca;
+package OOCTaxCalculator;
 /**
  *
  * @author lizandra 2022236 and Taciana 2022404
