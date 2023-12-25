@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  *
- * @author lizandra 2022236 and Taciana 2022404
+ * @author Lizandra 2022236 and Taciana 2022404
  */
 
 public class OOCTaxCalculater {
@@ -180,17 +180,168 @@ private User signInUser() throws SQLException {
                     throw new AssertionError(); // Handling unexpected user choices
             }
         }
- private void performAdminFunctions(){
-        String userName = scan.getUserText("Enter your username:");
-        String password = scan.getUserText("Enter your password:");
-        User user = dbReader.getUser(userName, password);        
-        if (user != null && user.getRole().equals("Admin")) {
-        // Here, implement the admin functionalities
-        System.out.println("Access to admin functions granted.");
-    } else {
-        System.out.println("Access Denied: You are not an admin or invalid credentials.");
-    }      
-    }
+        // Method responsible for giving the Admin user the right to add or delete users
+        private void adminFunctionsUser(User loggedInUser) throws SQLException {
+            System.out.println("1. Show all users.");
+            System.out.println("2. Delete an user.");
+            System.out.println("3. Edit an user.");
+            //System.out.println("4. Show user operations.");
+
+            int regularChoice = scan.getUserInt("Choose an option:", 1, 3);
+            List<User> allUsers = this.dbReader.getAllUsers();
+            int index = allUsers.size();
+            int selectedUser = -1;
+            boolean sucess;
+            //swith would be the best to handle and make it organised 
+            switch (regularChoice) {
+                case 1:
+
+                    printAllUsers(allUsers);
+
+                    break;
+                case 2:
+
+                    selectedUser = scan.getUserInt("Select the number of the user", 0, index - 1);
+                    sucess = this.dbWriter.removeUser(allUsers.get(selectedUser).getUserName());
+                    if (sucess) {
+                        System.out.println("User removed");
+                    } else {
+                        System.out.println("An error ocurred. Try again");
+                    }
+
+                    allUsers = this.dbReader.getAllUsers();
+
+                    break;
+
+                case 3:
+                    selectedUser = scan.getUserInt("Select the number of the user", 0, (index - 1));
+                    sucess = modifyUser(allUsers.get(selectedUser));
+                    if (sucess) {
+                        System.out.println("Update Sucefull");
+                    } else {
+                       System.out.println("An error ocurred. Try again"); 
+                    }
+                    
+                    break;
+                default: // throwing an error in case of something go wrong
+                    throw new AssertionError();
+            }
+        }
+
+        private int printAllUsers(List<User> allUsers) {
+            int index;
+
+            for (index = 0; index < allUsers.size(); index++) {
+                System.out.println(index + "- " + allUsers.get(index));
+            }
+            // returning the new value assigned
+            return index;
+        }
+        // Method responsible for giving the Admin user the right to change all the user data needed
+        private boolean modifyUser(User user) throws SQLException {
+            System.out.println("1. User Name: " + user.getUserName() + "\n");
+            System.out.println("2. First Name: " + user.getFirstName() + "\n");
+            System.out.println("3. Last Name: " + user.getLastName() + "\n");
+            System.out.println("4. Pass Word: " + user.getPassword() + "\n");
+            System.out.println("5. Position: " + user.getPosition() + "\n");
+            System.out.println("6. BithDate: " + user.getBirthDate().toString() + "\n");
+            System.out.println("7. E-mail: " + user.getEmail() + "\n");
+            System.out.println("8. Country: " + user.userAdress.getCountry() + "\n");
+            System.out.println("9. State: " + user.userAdress.getState() + "\n");
+            System.out.println("10. City: " + user.userAdress.getCity() + "\n");
+            System.out.println("11. ZIPCode: " + user.userAdress.getZIPCode() + "\n");
+            System.out.println("12. StreetName: " + user.userAdress.getStreetName() + "\n");
+            System.out.println("13. StreetNumber: " + user.userAdress.getStreetNumber() + "\n");
+
+            int dataChoice = scan.getUserInt("Choose an option for modify:", 1, 13);
+            // switch since is the best to deal with many options
+            switch (dataChoice) {
+                case 1:
+                    // change user name
+                    String newUserName = scan.getUserText("Enter a new UserName");
+                    user.setUserName(newUserName);
+                    System.out.println("User Name updated to: " + newUserName);
+                    break;
+                case 2:
+                    // change first name    
+                    String newFirstName = scan.getUserText("Enter a new First Name");
+                    user.setFirstName(newFirstName);
+                    System.out.println("First Name updated to: " + newFirstName);
+                    break;
+                case 3:
+                    // change lastname
+                    String newLastName = scan.getUserText("Enter a new Last Name");
+                    user.setLastName(newLastName);
+                    System.out.println("Last Name updated to: " + newLastName);
+                    break;
+                case 4:
+                    // change password
+                    String newPassword = scan.getUserText("Enter a new Password");
+                    user.setPassword(newPassword);
+                    System.out.println("Password updated to: " + newPassword);
+                    break;
+                case 5:
+                    // change position
+                    String newPosition = scan.getUserText("Enter a new Position");
+                    user.setPosition(newPosition);
+                    System.out.println("Position updated to: " + newPosition);
+                    break;
+                case 6:
+                    // change birthDate
+                    Date newBirthDate = scan.getUserData("Enter a new Birth Date.");
+                    user.setBirthDate(newBirthDate);
+                    System.out.println("Birth Date updated to: " + newBirthDate);
+                    break;
+                case 7:
+                    // change e-mail
+                    String newEmail = scan.getUserText("Enter a new Email");
+                    user.setEmail(newEmail);
+                    System.out.println("Email updated to: " + newEmail);
+                    break;
+                case 8:
+                    String newCountry = scan.getUserText("Enter new Country");
+                    user.userAdress.setCountry(newCountry);
+                    System.out.println("Country updated to: " + newCountry);
+                    break;
+
+                case 9:
+                    // change state
+                    String newState = scan.getUserText("Enter new State");
+                    user.userAdress.setState(newState);
+                    System.out.println("State updated to: " + newState);
+                    break;
+                case 10:
+                    // chance city
+                    String newCity = scan.getUserText("Enter new City");
+                    user.userAdress.setCity(newCity);
+                    System.out.println("City updated to: " + newCity);
+                    break;
+                case 11:
+                    // Modify ZIPCode
+                    int newZIPCode = scan.getUserInt("Enter new ZIP Code", 100000, 999999);
+                    user.userAdress.setZIPCode(newZIPCode);
+                    System.out.println("ZIP Code updated to: " + newZIPCode);
+                    break;
+                case 12:
+                    // Modify name of the street
+                    String newStreetName = scan.getUserText("Enter new Street Name");
+                    user.userAdress.setStreetName(newStreetName);
+                    System.out.println("Street Name updated to: " + newStreetName);
+                    break;
+                case 13:
+                    // Modify number street
+                    int newStreetNumber = scan.getUserInt("Enter new Street Number", 1, Integer.MAX_VALUE);
+                    user.userAdress.setStreetNumber(newStreetNumber);
+                    System.out.println("Street Number updated to: " + newStreetNumber);
+                    break;
+
+                default:
+                    System.out.println("Invalid choice");
+                    break;
+            }
+            // returning the new value also in the database writer
+           return this.dbWriter.updateUser(user);
+        }
+
     }
 }
-
